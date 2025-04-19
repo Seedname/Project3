@@ -1,5 +1,4 @@
 from collections import deque
-import copy
 adj={
 	#adj needs to be replaced with actual data
     1:[[2,100],[2,200],[3,200],[4,300],[4,400],[5,300],[5,400]],
@@ -14,7 +13,7 @@ adj={
 
 def bfs(source, target):
 	q=deque()
-	q.append((source,0,[]))
+	q.append((source,[]))
 	seen=set()
 	#source is the current actor, 0 is the distance from source (not needed i think), [] contains the path taken
 	while q:
@@ -24,15 +23,10 @@ def bfs(source, target):
 			movie=pair[1]
 			if actor in seen:
 				continue
+			seen.add(cur[0])
 			if actor==target:
-				path=cur[2]
-				path.append([actor,movie])
-				return path
-			updated_path=copy.deepcopy(cur[2])
-
-			updated_path.append([actor,movie])
-			q.append((actor,cur[1]+1,updated_path))
-		seen.add(cur[0])
+				return cur[1] + [[actor, movie]]
+			q.append((actor,cur[1]+[[actor,movie]]))
 	return -1
 			
 print(bfs(5,3))
