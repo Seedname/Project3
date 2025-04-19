@@ -14,7 +14,7 @@ adj={
 def bfs(source, target):
 	q=deque()
 	q.append((source,[]))
-	seen=set()
+	seen={source}
 	#source is the current actor, 0 is the distance from source (not needed i think), [] contains the path taken
 	while q:
 		cur=q.popleft()
@@ -23,9 +23,9 @@ def bfs(source, target):
 			movie=pair[1]
 			if actor in seen:
 				continue
-			seen.add(cur[0])
 			if actor==target:
 				return cur[1] + [[actor, movie]]
+			seen.add(actor)
 			q.append((actor,cur[1]+[[actor,movie]]))
 	return -1
 			
