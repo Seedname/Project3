@@ -44,7 +44,7 @@ def get_actors() -> None:
             line = json.loads(line)
             for actor in line:
 
-                actor_names[line[actor][0]["id"]] = unidecode(line[actor][0]["name"])
+                actor_names[unidecode(line[actor][0]["name"])] = line[actor][0]["id"]
         
     with open(path / "actor_names.json", "w") as f:
         json.dump(actor_names, f)
@@ -53,5 +53,5 @@ def get_actors() -> None:
 
 if __name__ == "__main__":
     path = pathlib.Path(__file__).parent
-    get_movies()
-    # get_actors()
+    # get_movies()
+    get_actors()
