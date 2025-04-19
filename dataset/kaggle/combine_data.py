@@ -1,11 +1,12 @@
 import json
 import pathlib
 from text_unidecode import unidecode
-
+from collections import defaultdict
 
 def get_movies() -> None:
     movie_names = {}
     actor_movies = {}
+    movies_actors = defaultdict(list)
 
     for file in (path / "movies").glob("*.txt"):
         with open(file, "r") as f:
@@ -17,6 +18,10 @@ def get_movies() -> None:
             movie_ids = [int(movie["id"]) for movie in line[actor_id]]
             actor_movies[int(actor_id)] = movie_ids
             movies = {int(movie["id"]): unidecode(movie["title"]) for movie in line[actor_id]}
+
+            for movie in line[actor_id]:
+                movies_actors[int(movie["id"])].append(int(actor_id))
+
             movie_names |= movies
 
     with open(path / "actor_movies.json", 'w') as f:
@@ -24,6 +29,10 @@ def get_movies() -> None:
     
     with open(path / "movie_names.json", 'w') as f:
         json.dump(movie_names, f)
+
+    with open(path / "movies_actors.json", 'w') as f:
+        json.dump(movies_actors, f)
+
 
 def get_actors() -> None:
     actor_names = {}
