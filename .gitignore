@@ -2,3 +2,6 @@
 .env
 *.csv
 __pycache__/
+.DS_STORE
+*.data
+graph.json
