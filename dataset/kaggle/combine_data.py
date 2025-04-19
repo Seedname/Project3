@@ -16,7 +16,7 @@ def get_movies() -> None:
             actor_id = list(line.keys())[0]
             movie_ids = [int(movie["id"]) for movie in line[actor_id]]
             actor_movies[int(actor_id)] = movie_ids
-            movies = {int(movie["id"]): unidecode(movie["original_title"]) for movie in line[actor_id]}
+            movies = {int(movie["id"]): unidecode(movie["title"]) for movie in line[actor_id]}
             movie_names |= movies
 
     with open(path / "actor_movies.json", 'w') as f:
@@ -44,5 +44,5 @@ def get_actors() -> None:
 
 if __name__ == "__main__":
     path = pathlib.Path(__file__).parent
-    # get_movies()
-    get_actors()
+    get_movies()
+    # get_actors()
