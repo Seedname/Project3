@@ -4,17 +4,22 @@ import pathlib
 from collections import deque
 import copy
 from flask_cors import CORS
+import heapq
+import json
 
 
 path = pathlib.Path(__file__).parent
 with open(path / "graph.data", 'rb') as f:
     graph = pickle.load(f)
+with open('dataset/kaggle/avg_popularities.json', 'r') as file:
+    avg_popularities = json.load(file)
 
 app = Flask(__name__)
 
 CORS(app,
      resources={r"/*": {"origins": "http://127.0.0.1:5500"}},
-)
+     )
+
 
 @app.route('/bfs', methods=['GET'])
 def bfs():
@@ -24,7 +29,6 @@ def bfs():
     """
     source = int(request.args.get('source'))
     target = int(request.args.get('target'))
-
 
     # q=deque()
     # q.append((source,[]))
@@ -42,28 +46,30 @@ def bfs():
     #             path =  cur[1] + [[actor, movie]]
     #             return jsonify({'path': path}), 200
     #         q.append((actor,cur[1]+[[actor,movie]]))
-            
-    q=deque()
-    q.append((source,[]))
-    seen={source}
-    #source is the current actor, 0 is the distance from source (not needed i think), [] contains the path taken
+
+    q = deque()
+    q.append((source, []))
+    seen = {source}
+    # source is the current actor, 0 is the distance from source (not needed i think), [] contains the path taken
     while q:
-        cur=q.popleft()
+        cur = q.popleft()
         for pair in graph[cur[0]]:
-            actor=pair[0]
-            movie=pair[1]
+            actor = pair[0]
+            movie = pair[1]
             if actor in seen:
                 continue
-            if actor==target:
+            if actor == target:
                 path = cur[1] + [[actor, movie]]
                 return jsonify({'path': path}), 200
             seen.add(actor)
-            q.append((actor,cur[1]+[[actor,movie]]))
-			
+            q.append((actor, cur[1]+[[actor, movie]]))
+
     # TODO: Implement BFS algorithm here
     return jsonify({'path': []}), 200
 
+
 @app.route('/djikstra', methods=['GET'])
+# should be renamed to best_first_search. im not doing it because idk if it will brick something
 def djisktras():
     """
     Dijkstra's algorithm endpoint.
@@ -72,7 +78,27 @@ def djisktras():
     source = request.args.get('source')
     target = request.args.get('target')
     # TODO: Implement Dijkstra's algorithm here
+    # if you are having issues running this it is probably this next line!
+    target_pop = avg_popularities[target]
+    pq = []
+    heapq.heappush(pq, (0, source, []))
+    seen = {source}
+    # 0 is the popularity score, source is the current actor, [] contains the path taken
+    while pq:
+        cur = heapq.heappop(pq)
+        for trip in graph[cur[1]]:
+            actor = trip[0]
+            movie = trip[1]
+            popularity = trip[2]
+            if actor in seen:
+                continue
+            if actor == target:
+                return cur[2] + [[actor, movie]]
+            seen.add(actor)
+            heapq.heappush(pq, (abs(target_pop-popularity),
+                           actor, cur[2]+[[actor, movie]]))
     return jsonify({'message': "Dijkstra's algorithm not implemented yet", 'source': source, 'target': target}), 501
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
