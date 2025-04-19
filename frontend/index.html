@@ -7,13 +7,18 @@
 
     <body>
         <form id="form">
+
             <label for="first">Actor 1:</label>
-            <input name="first" id="first" required>
+            <input name="first" id="first" autocomplete="off" required>
+            <input type="hidden" name="first_id" id="first_id">
+            <ul id="first_suggestions" class="suggestions"></ul>
 
             <br><br>
 
             <label for="second">Actor 2:</label>
-            <input name="second" id="second" required>
+            <input name="second" id="second" autocomplete="off" required>
+            <input type="hidden" name="second_id" id="second_id">
+            <ul id="second_suggestions" class="suggestions"></ul>
 
             <br><br>
             <input type="submit" value="Submit">

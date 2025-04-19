@@ -26,9 +26,26 @@ def bfs():
     target = int(request.args.get('target'))
 
 
+    # q=deque()
+    # q.append((source,[]))
+    # seen=set()
+    # #source is the current actor, 0 is the distance from source (not needed i think), [] contains the path taken
+    # while q:
+    #     cur=q.popleft()
+    #     for pair in graph[cur[0]]:
+    #         actor=pair[0]
+    #         movie=pair[1]
+    #         if actor in seen:
+    #             continue
+    #         seen.add(cur[0])
+    #         if actor==target:
+    #             path =  cur[1] + [[actor, movie]]
+    #             return jsonify({'path': path}), 200
+    #         q.append((actor,cur[1]+[[actor,movie]]))
+            
     q=deque()
     q.append((source,[]))
-    seen=set()
+    seen={source}
     #source is the current actor, 0 is the distance from source (not needed i think), [] contains the path taken
     while q:
         cur=q.popleft()
@@ -37,12 +54,12 @@ def bfs():
             movie=pair[1]
             if actor in seen:
                 continue
-            seen.add(cur[0])
             if actor==target:
-                path =  cur[1] + [[actor, movie]]
+                path = cur[1] + [[actor, movie]]
                 return jsonify({'path': path}), 200
+            seen.add(actor)
             q.append((actor,cur[1]+[[actor,movie]]))
-            
+			
     # TODO: Implement BFS algorithm here
     return jsonify({'path': []}), 200
 
