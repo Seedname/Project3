@@ -112,7 +112,7 @@ async function init() {
     }
   
     // 1) Query the BFS endpoint
-    const apiUrl = new URL("http://127.0.0.1:8080/bfs");
+    const apiUrl = new URL("http://127.0.0.1:8080/best-first");
     apiUrl.searchParams.append('source', sourceId);
     apiUrl.searchParams.append('target', targetId);
     const res = await fetch(apiUrl);
@@ -123,7 +123,7 @@ async function init() {
     out.innerHTML = "";  // clear previous
   
     if (!path || path.length === 0) {
-      out.textContent = "No connection found.";
+      out.textContent = `No connection found between ${actorIdToName[String(sourceId)]} and ${actorIdToName[String(targetId)]}.`;
       return;
     }
 
