@@ -116,15 +116,28 @@ async function init() {
   const apiUrl = new URL(`http://127.0.0.1:8080/${algo}`);
     apiUrl.searchParams.append('source', sourceId);
     apiUrl.searchParams.append('target', targetId);
+
+    // Start timer
+    const startTime = performance.now();
+
     const res = await fetch(apiUrl);
     const { path } = await res.json();               // e.g. [[A1, M1], [A2, M2], ...]
+
+    // End timer
+    const endTime = performance.now();
+    const durationMs = endTime - startTime;
 
     // 2) Format into human-readable HTML
     const out = document.getElementById("output");
     out.innerHTML = "";  // clear previous
-  
+
+    const timeDisplay = document.createElement("p");
+    timeDisplay.textContent = `Search completed in ${durationMs.toFixed(2)} ms.`;
+    out.appendChild(timeDisplay);
+
     if (!path || path.length === 0) {
       out.textContent = `No connection found between ${actorIdToName[String(sourceId)]} and ${actorIdToName[String(targetId)]}.`;
+      out.appendChild(timeDisplay);
       return;
     }
 
