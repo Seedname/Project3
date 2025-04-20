@@ -1,8 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import pickle
 import pathlib
 from collections import deque
-import copy
 from flask_cors import CORS
 import heapq
 import json
@@ -62,27 +61,28 @@ def best_first_search():
     target = int(request.args.get('target'))
 
     # if you are having issues running this it is probably this next line!
-    target_pop = avg_popularities[str(target)]
+    target_pop = avg_popularities.get(str(target), 0)
     pq = []
-    heapq.heappush(pq, (0, source, []))
+    heapq.heappush(pq, (0, 0, source, []))
     seen = {source}
-    # 0 is the popularity score, source is the current actor, [] contains the path taken
+    # args: distance, priority (based on popularity), source, path taken
     while pq:
         cur = heapq.heappop(pq)
-        for trip in graph[cur[1]]:
+        for trip in graph[cur[2]]:
             actor = trip[0]
             movie = trip[1]
             popularity = trip[2]
             if actor in seen:
                 continue
             if actor == target:
-                path = cur[2] + [[actor, movie]]
+                path = cur[3] + [[actor, movie]]
                 return jsonify({'path': path}), 200
             seen.add(actor)
-            heapq.heappush(pq, (abs(target_pop-popularity),
-                           actor, cur[2]+[[actor, movie]]))
+            heapq.heappush(pq, (cur[0]+1, abs(target_pop-popularity),
+                           actor, cur[3]+[[actor, movie]]))
 
     return jsonify({'path': []}), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

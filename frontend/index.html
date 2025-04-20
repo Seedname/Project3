@@ -7,7 +7,7 @@
 
     <body>
         <form id="form">
-
+            
             <label for="first">Actor 1:</label>
             <input name="first" id="first" autocomplete="off" required>
             <input type="hidden" name="first_id" id="first_id">
@@ -22,6 +22,11 @@
 
             <br><br>
             <input type="submit" value="Submit">
+            <label for="algorithm">Choose algorithm:</label>
+            <select id="algorithm">
+                <option value="best-first">Best-First Search</option>
+                <option value="bfs">Breadth-First Search</option>
+            </select>
         </form>
 
         <div>

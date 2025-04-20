@@ -111,8 +111,9 @@ async function init() {
       return alert("Please select both actors from the suggestions.");
     }
   
-    // 1) Query the BFS endpoint
-    const apiUrl = new URL("http://127.0.0.1:8080/best-first");
+    // 1) Decide which endpoint to hit based on selection
+  const algo = document.getElementById("algorithm").value;
+  const apiUrl = new URL(`http://127.0.0.1:8080/${algo}`);
     apiUrl.searchParams.append('source', sourceId);
     apiUrl.searchParams.append('target', targetId);
     const res = await fetch(apiUrl);
