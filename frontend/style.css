@@ -5,6 +5,7 @@ body {
   height: 100vh;
   display: flex;
   align-items: center;
+  background-color: rgb(255, 209, 254);
 }
 
 .container {
@@ -100,7 +101,7 @@ label {
   margin-bottom: 5px;
 }
 
-input, 
+input,
 input[type="submit"],
 select {
   margin-bottom: 10px;
