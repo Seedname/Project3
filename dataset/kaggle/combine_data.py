@@ -69,6 +69,9 @@ def get_movies() -> None:
 
 def get_actors_sorted() -> None:
     actor_names = {}
+    with open(path / "movies_actors.json", 'r') as f:
+        actors_movies = json.load(f)
+
     for file in (path / "outputs").glob("*.txt"):
         with open(file, "r") as f:
             lines = f.readlines()
@@ -76,6 +79,8 @@ def get_actors_sorted() -> None:
         for line in lines:
             line = json.loads(line)
             for actor in line:
+                if str(line[actor][0]["id"]) not in actors_movies:
+                    continue
 
                 actor_names[unidecode(line[actor][0]["name"]).strip(
                 ).lower()] = line[actor][0]["id"]
@@ -107,5 +112,6 @@ def get_actors() -> None:
 
 if __name__ == "__main__":
     path = pathlib.Path(__file__).parent
-    get_movies()
+    # get_movies()
     # get_actors()
+    get_actors_sorted()
