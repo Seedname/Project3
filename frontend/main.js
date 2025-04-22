@@ -62,6 +62,58 @@ function attachAutocomplete(inputEl, suggestionsEl, idHiddenEl) {
   });
 }
 
+function createGraphNode(text, nodeType) {
+  const node = document.createElement('div');
+  node.className = `node ${nodeType}`;
+  if (nodeType === 'actor-node'){
+    node.textContent = `Node (Actor): ${text}`;
+  } else {
+    node.textContent = `Edge (Movie): ${text}`;
+  }
+  return node;
+}
+
+function createArrow() {
+  const arrow = document.createElement('div');
+  arrow.className = 'arrow';
+  return arrow;
+}
+
+function createLine() {
+  const line = document.createElement('div');
+  line.className = 'line';
+  return line;
+}
+
+function buildGraph(path) {
+  const graphContainer = document.querySelector('.graph');
+  graphContainer.innerHTML = '';
+  
+  const sourceId = document.getElementById("first_id").value;
+  const firstActorName = actorIdToName[String(sourceId)] || `(actor #${sourceId})`;
+  
+  graphContainer.appendChild(createGraphNode(firstActorName, 'actor-node'));
+  
+  let previousActorId = sourceId;
+  for (let i = 0; i < path.length; i++) {
+    const [actorId, movieId] = path[i];
+    
+    graphContainer.appendChild(createLine());
+    graphContainer.appendChild(createArrow());
+    
+    const movieTitle = movieIdToName[String(movieId)] || `(movie #${movieId})`;
+    graphContainer.appendChild(createGraphNode(movieTitle, 'movie-node'));
+    
+    graphContainer.appendChild(createLine());
+    graphContainer.appendChild(createArrow());
+    
+    const actorName = actorIdToName[String(actorId)] || `(actor #${actorId})`;
+    graphContainer.appendChild(createGraphNode(actorName, 'actor-node'));
+    
+    previousActorId = actorId;
+  }
+}
+
 async function init() {
     //
     // 1) Load the actor-name → ID map (for autocomplete)
@@ -141,7 +193,7 @@ async function init() {
       return;
     }
 
-    // Build a <ul> with one <li> per “hop”
+    // Build a <ul> with one <li> per "hop"
     const ul = document.createElement('ul');
     let previousActorId = sourceId;
     for (let i = 0; i < path.length; i++) {
@@ -149,16 +201,18 @@ async function init() {
     //   const nextActorId     = path[i+1][0];
   
       const actorName  = actorIdToName[String(previousActorId)]  || `(actor #${previousActorId})`;
-      const movieTitle = movieIdToName[String(movieId)]  || `(movie #${movieId})`;
+      let movieTitle = movieIdToName[String(movieId)]  || `(movie #${movieId})`;
+
       const nextActor  = actorIdToName[String(actorId)] || `(actor #${actorId})`;
-    previousActorId = actorId;
+      previousActorId = actorId;
       const li = document.createElement('li');
-      li.textContent = `${actorName} appeared in “${movieTitle}” with ${nextActor}.`;
+      li.textContent = `${actorName} appeared in "${movieTitle}" with ${nextActor}.`;
       ul.appendChild(li);
     }
   
-  
     out.appendChild(ul);
+    
+    buildGraph(path);
   };
   
 

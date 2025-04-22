@@ -1,19 +1,109 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  width: 350px;
+  height: 90vh;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  margin-left: 20px;
+}
+
+.graph-container {
+  flex: 1;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: auto;
+}
+
+.graph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 20px;
+}
+
+.node {
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 120px;
+  max-width: 300px;
+  word-break: break-word;
+}
+
+.actor-node {
+  background-color: #b3e0ff;
+  border: 2px solid #0077cc;
+}
+
+.movie-node {
+  background-color: #ffd699;
+  border: 2px solid #ff9900;
+}
+
+/* source for arrow creation: https://www.w3schools.com/howto/howto_css_arrows.asp */
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: translateX(0px) translateY(-6px) rotate(45deg);
+}
+
+.line {
+  border: solid black;
+  border-width: 0 3px 0 0;
+  display: inline-block;
+  padding: 5px;
+  transform: translateX(-5px) translateY(3px);
+}
+
 .suggestions {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border: 1px solid #ccc;
-    max-height: 150px;
-    overflow-y: auto;
-    position: absolute;
-    background: white;
-    width: 200px; /* match your input width */
-  }
-  .suggestions li {
-    padding: 4px 8px;
-    cursor: pointer;
-  }
-  .suggestions li:hover {
-    background: #eee;
-  }
-  
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  position: absolute;
+  background: white;
+  width: 200px;
+}
+
+.suggestions li {
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.suggestions li:hover {
+  background: #eee;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input, 
+input[type="submit"],
+select {
+  margin-bottom: 10px;
+}
+
+#output {
+  margin-top: 20px;
+}
