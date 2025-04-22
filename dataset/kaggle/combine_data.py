@@ -69,7 +69,7 @@ def get_movies() -> None:
 
 def get_actors_sorted() -> None:
     actor_names = {}
-    with open(path / "movies_actors.json", 'r') as f:
+    with open(path / "actor_movies.json", 'r') as f:
         actors_movies = json.load(f)
 
     for file in (path / "outputs").glob("*.txt"):
