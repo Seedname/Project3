@@ -16,8 +16,8 @@ if __name__ == "__main__":
         with open(file_path, 'r') as file:
             for line in file:
                 if line == "\n": continue
-                # id = str(list(json.loads(line).values())[0][0]["id"])
-                # output_ids.append(id)
+                id = str(list(json.loads(line).values())[0][0]["id"])
+                output_ids.append(id)
 
                 total_length += 1
 
@@ -25,3 +25,5 @@ if __name__ == "__main__":
 
     df.to_csv(path.joinpath("ids.csv"), index=False)
     print("Unique data points:", total_length)
+
+
