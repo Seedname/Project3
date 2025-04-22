@@ -62,12 +62,16 @@ function attachAutocomplete(inputEl, suggestionsEl, idHiddenEl) {
   });
 }
 
-function createGraphNode(text, nodeType) {
-  const node = document.createElement('div');
+function createGraphNode(text, nodeType, id) {
+  const node = document.createElement('a');
   node.className = `node ${nodeType}`;
+  node.target = '_blank';
+
   if (nodeType === 'actor-node'){
+    node.href = `https://www.themoviedb.org/person/${id}`;
     node.textContent = `Node (Actor): ${text}`;
   } else {
+    node.href = `https://www.themoviedb.org/movie/${id}`;
     node.textContent = `Edge (Movie): ${text}`;
   }
   return node;
@@ -92,7 +96,7 @@ function buildGraph(path) {
   const sourceId = document.getElementById("first_id").value;
   const firstActorName = actorIdToName[String(sourceId)] || `(actor #${sourceId})`;
   
-  graphContainer.appendChild(createGraphNode(firstActorName, 'actor-node'));
+  graphContainer.appendChild(createGraphNode(firstActorName, 'actor-node', sourceId));
   
   let previousActorId = sourceId;
   for (let i = 0; i < path.length; i++) {
@@ -102,13 +106,13 @@ function buildGraph(path) {
     graphContainer.appendChild(createArrow());
     
     const movieTitle = movieIdToName[String(movieId)] || `(movie #${movieId})`;
-    graphContainer.appendChild(createGraphNode(movieTitle, 'movie-node'));
+    graphContainer.appendChild(createGraphNode(movieTitle, 'movie-node', movieId));
     
     graphContainer.appendChild(createLine());
     graphContainer.appendChild(createArrow());
     
     const actorName = actorIdToName[String(actorId)] || `(actor #${actorId})`;
-    graphContainer.appendChild(createGraphNode(actorName, 'actor-node'));
+    graphContainer.appendChild(createGraphNode(actorName, 'actor-node', actorId));
     
     previousActorId = actorId;
   }
