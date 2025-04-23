@@ -5,33 +5,66 @@ import math
 from statistics import mean, stdev
 import scipy
 
+# function to perform a matched-pairs t-test
 def t_test_matched_pairs(time_difference):
+    print("Matched-pairs t-test:\n")
+    print("Null hypothesis: The best first search algorithm is equally as fast as the breadth first search algorithm.")
+    print("Alpha value (Level of significance): 0.01")
+    
+    # compute this test's degrees of freedom
     df = len(time_difference) - 1
     
+    # compute this test's mean
     sample_mean = mean(time_difference)
     print(f"Mean difference: {sample_mean}")
     
+    # compute this test's standard deviation for the sampling distribution, which is the standard deviation divided by the square root of the number of samples.
     sample_stdev = stdev(time_difference) / (len(time_difference) ** (1/2))
     print(f"Standard deviation of sampling distribution of differences: {sample_stdev}")
     
+    # compute this test's t-statistic
     t_statistic = sample_mean / sample_stdev
     print(f"Value of t-statistic: {t_statistic}")
     
-    print(f"P-value for statistical test: {1 - scipy.stats.t.cdf(t_statistic, df)}")
+    # compute this test's p-value
+    p_value = 1 - scipy.stats.t.cdf(t_statistic, df)
+    print(f"P-value for statistical test: {p_value}")
+    
+    # reach a statistical conclusion
+    if (p_value < 0.01):
+        print(f"\nWe have reached a statistically significant result: Since our p-value of {p_value} is less than our previously stated alpha\nvalue of 0.01, we reject the null hypothesis: We can conclude the best-first search algorithm is faster\nthan the breadth-first search algorithm.")
+    else:
+        print(f"We have not reached a statistically significant result: Since our p-value of {p_value} is greater than our previously stated alpha\nvalue of 0.01, we fail to reject the null hypothesis.")
 
 def t_test_two_sample(bfs_mean, best_first_mean, bfs_stddev, best_first_stdev, num_samples_bfs, num_samples_best_first):
+    print("Two-sample t-test:\n")
+    print("Null hypothesis: The best first search algorithm is equally as fast as the breadth first search algorithm.")
+    print("Alpha value (Level of significance): 0.01")
+    
+    # compute this test's degrees of freedom
     df = min(num_samples_bfs - 1, num_samples_best_first - 1)
     
+    # compute this test's mean
     difference_of_means = bfs_mean - best_first_mean
     print(f"Difference of means: {difference_of_means}")
     
+    # compute this test's standard deviation for the sampling distribution, which is the standard deviation divided by the square root of the number of samples.
     combined_standard_deviation = (((bfs_stddev ** 2) / num_samples_bfs) + ((best_first_stdev ** 2) / num_samples_best_first)) ** (1/2)
     print(f"Combined sampling distribution standard deviation: {combined_standard_deviation}")
     
+    # compute this test's t-statistic
     t_statistic = difference_of_means / combined_standard_deviation
     print(f"Value of t-statistic: {t_statistic}")
     
-    print(f"P-value for statistical test: {1 - scipy.stats.t.cdf(t_statistic, df)}")
+    # compute this test's p-value
+    p_value = 1 - scipy.stats.t.cdf(t_statistic, df)
+    print(f"P-value for statistical test: {p_value}")
+    
+    # reach a statistical conclusion
+    if (p_value < 0.01):
+        print(f"\nWe have reached a statistically significant result: Since our p-value of {p_value} is less than\nour previously stated alpha value of 0.01, we reject the null hypothesis: The best-first search algorithm is faster\nthan the breadth-first search algorithm.")
+    else:
+        print(f"We have not reached a statistically significant result: Since our p-value of {p_value} is greater than our previously stated\nalpha value of 0.01, we fail to reject the null hypothesis.")
     
 
 def main() -> None:
@@ -56,8 +89,11 @@ def main() -> None:
                 # print(line)
                 name, actor_id, best_first_path_len, time_best_first, bfs_path_len, time_bfs = line
                 if int(best_first_path_len) >= 0:
-                    if int(best_first_path_len) == 6:
-                        print(name)
+                    
+                    # dev code to give the actors with bacon number 6
+                    # if int(best_first_path_len) == 6:
+                    #    print(name)
+                    
                     best_first_times.append(float(time_best_first))
                     bfs_times.append(float(time_bfs))
 
@@ -67,6 +103,7 @@ def main() -> None:
                 time_difference.append(float(time_bfs) - float(time_best_first))
 
     x = list(range(10_000))
+    
     # for i, length in enumerate(bfs_lens):
     #     if best_first_lens[i] != length:
     #         print(i, best_first_lens[i], length)
@@ -75,11 +112,12 @@ def main() -> None:
     print("---------------------------------")
     t_test_matched_pairs(time_difference)
     
+    # Compute all parameters necessary to perform the two-sample t-test
     bfs_mean = mean(bfs_times)
     best_first_mean = mean(best_first_times)
     
-    bfs_stdev = mean(bfs_times)
-    best_first_stdev = mean(best_first_times)
+    bfs_stdev = stdev(bfs_times)
+    best_first_stdev = stdev(best_first_times)
     
     num_samples_bfs = len(bfs_times)
     num_samples_best_first = len(best_first_times)
