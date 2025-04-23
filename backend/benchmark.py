@@ -67,6 +67,10 @@ def best_first_search(source: int, target: int):
 
 
 def process_chunk(start_idx: int):
+    """
+    This file uses multiprocessing to time the bfs and best-first search algorithms 
+    in chunks to get benchmark results
+    """
     end_idx = min(start_idx + chunk_size, total)
     chunk_items = items[start_idx:end_idx]
 
@@ -110,7 +114,7 @@ def process_chunk(start_idx: int):
 
 if __name__ == "__main__":
     out_dir = pathlib.Path(__file__).parent / "bench_chunks"
-    bacon = names_to_ids["kevin bacon"]
+    bacon = names_to_ids["kevin bacon"] # start at kevin bacon
     num_proc = 8                 # number of worker processes
     chunk_size = 100            # how many (name,id) pairs per worker
     flush_every = 1             # flush to disk every N results

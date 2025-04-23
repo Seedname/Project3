@@ -12,7 +12,7 @@ def get_movies() -> None:
         2. Get a map from a movie id to a movie name
         3. Get a map of the movie id to the actors that have been in that movie
         4. Get a map from the movie id to that movie's popularity
-        5. 
+        5. Get the average popularity of the movies that the actor has been in.
     """
     movie_names = {}
     actor_movies = {}
@@ -74,6 +74,10 @@ def get_movies() -> None:
 
 
 def get_actors_sorted() -> None:
+    """
+    The purpose of this function is to return a sorted map from actor names to ids 
+    to run a prefix binary search on the frontend as an efficient search algorithm
+    """
     actor_names = {}
     with open(path / "actor_movies.json", 'r') as f:
         actors_movies = json.load(f)
@@ -97,6 +101,9 @@ def get_actors_sorted() -> None:
 
 
 def get_actors() -> None:
+    """
+    This function gets a map of actor ids to names
+    """
     actor_names = {}
     for file in (path / "outputs").glob("*.txt"):
         with open(file, "r") as f:
@@ -113,6 +120,9 @@ def get_actors() -> None:
         json.dump(actor_names, f)
 
 def get_actors_urls() -> None:
+    """
+    This function gets a map of actor ids to the url's of their profile photos
+    """
     actor_urls = {}
 
     with open(path / "data" / "actor_movies.json", 'r') as f:
@@ -136,6 +146,9 @@ def get_actors_urls() -> None:
         json.dump(actor_urls, f)
 
 def get_movies_urls() -> None:
+    """
+    This function gets a map of movie ids to the url's of their poster photos
+    """
     movie_urls = {}
 
     for file in (path / "movies").glob("*.txt"):

@@ -8,16 +8,18 @@ import json
 import time
 
 path = pathlib.Path(__file__).parent
+# load graph data
 with open(path / "graph.data", 'rb') as f:
     graph = pickle.load(f)
 
+# load popularities
 with open(path / 'avg_popularities.json', 'r') as file:
     avg_popularities = json.load(file)
 
 app = Flask(__name__)
 
 CORS(app,
-     resources={r"/*": {"origins": "http://127.0.0.1:5501"}},
+     resources={r"/*": {"origins": "http://127.0.0.1:5500"}},
      )
 
 

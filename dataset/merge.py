@@ -3,10 +3,10 @@ import json
 from tqdm import tqdm
 import pandas
 
+# This file merges the actor or movie ids into a csv called id.csv and counts the number of unique points
 if __name__ == "__main__":
     path = pathlib.Path(__file__).parent
     outputs_folder = path.joinpath("movies")
-
     
     total_length = 0
     output_ids = []

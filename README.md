@@ -50,4 +50,9 @@ The server runs on 127.0.0.1:8080. You may need to edit the CORS settings to all
 ```
 
 
+## Gathering data from themoviedb api
 
+To collect data from themoviedb api when running `batch_query.py`, you must:
+- Visit https://www.themoviedb.org/ 
+- Request a API Token for your project
+- Create a `.env` file in the `dataset/` directory with `READ_TOKEN={read_token}`

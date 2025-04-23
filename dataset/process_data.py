@@ -5,6 +5,10 @@ import pickle
 
 
 def main(include_popularities: bool = True) -> None:
+    """
+    This function takes in our processed data and creates an adjacency list from it.
+    Only graph.data is used on the backend
+    """
     graph = defaultdict(list)
 
     with open(path / "actor_movies.json", 'r') as f:

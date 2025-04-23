@@ -6,6 +6,7 @@ from multiprocessing import Pool
 import pull as db
 
 def get_actor_names(start_index: int, chunk_size: int, buffer_size: int) -> list:
+    """ This function uses multiprocessing to get themoviedb id's from imdb ids"""
     with open(pathlib.Path(__file__).parent.joinpath(f"actors/result_{start_index}.txt"), "w") as f:
         buffer = ""
 
@@ -13,7 +14,7 @@ def get_actor_names(start_index: int, chunk_size: int, buffer_size: int) -> list
             id = str(df["nconst"].values[i])
 
             try:
-                result = db.get_people_from_page(id)
+                result = db.get_person_from_imdb_id(id)
                 buffer += json.dumps(result) + "\n"
             except ValueError as e:
                 # print(f"Something went wrong on the server: {e}")
@@ -33,7 +34,8 @@ def get_actor_names(start_index: int, chunk_size: int, buffer_size: int) -> list
         f.flush()
 
 
-def get_actor_names(start_index: int, chunk_size: int, buffer_size: int) -> list:
+def get_movie_names(start_index: int, chunk_size: int, buffer_size: int) -> list:
+    """ This function uses multiprocessing to get movies that an actor has been in from their themoviedb id's """     
     with open(pathlib.Path(__file__).parent.joinpath(f"movies/result_{start_index}.txt"), "w") as f:
         buffer = ""
 
