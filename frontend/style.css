@@ -24,6 +24,8 @@ body {
 /* container for the graph shown on the middle of the screen */
 .graph-container {
   flex: 1;
+  position: absolute;
+  left: 41%;
   height: 90vh;
   display: flex;
   justify-content: center;
@@ -50,7 +52,6 @@ body {
   max-width: 300px;
   word-break: break-word;
   color: inherit;
-  text-decoration: none;
 }
 
 /* color style for the actor nodes */
@@ -88,7 +89,7 @@ body {
   list-style: none;
   margin: -3px;
   padding: 0;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   max-height: 150px;
   overflow-y: auto;
   position: absolute;
@@ -148,6 +149,7 @@ select {
 
 /* code for the container of the image that comes up when a node is hovered over */
 #hover-image-container {
+  display: none;
   position: absolute;
   justify-content: center;
   align-items: flex-start;
@@ -156,7 +158,7 @@ select {
   border: 2px solid #333;
   border-radius: 8px;
   padding: 10px;
-  max-width: 200px;
+  max-width: 250px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
 }

@@ -84,24 +84,29 @@ function createGraphNode(text, nodeType, id) {
     node.dataset.type = "movie";
   }
 
+  // add event listener for hovering
   node.addEventListener("mouseenter", handleNodeHover);
   node.addEventListener("mouseleave", hideImageContainer);
 
   return node;
 }
 
+// function to handle hovering over the application
 function handleNodeHover(event) {
+
+  // import information about the node
   node = event.currentTarget;
   id = node.dataset.id;
   type = node.dataset.type;
   
-  imageContainer = document.getElementById("hover-image-container");
+  let imageContainer = document.getElementById("hover-image-container");
   image = document.getElementById("hover-image");
   title = document.getElementById("hover-title");
   
   let imageUrl;
   let titleText;
   
+  // use the actorIdToUrl or movieIdToUrl function to fetch the image url
   if (type === "actor") {
     imageUrl = actorIdToUrl[id];
     titleText = actorIdToName[id];
@@ -110,17 +115,21 @@ function handleNodeHover(event) {
     titleText = movieIdToName[id];
   }
   
+  // check for the image, if not found import placeholder image
   if (imageUrl) {
     image.src = imageUrl;
     title.textContent = titleText;
-    
+  } else {
+    image.src = "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg";
+    title.textContent = titleText;
   }
-  
+
   imageContainer.style.display = "block";
 }
 
+// function to hide the image container when mouse is moved
 function hideImageContainer() {
-  imageContainer = document.getElementById("hover-image-container");
+  let imageContainer = document.getElementById("hover-image-container");
   imageContainer.style.display = "none";
 }
 
@@ -275,7 +284,6 @@ const submit = async (event) => {
         actorIdToName[String(sourceId)]
       } and ${actorIdToName[String(targetId)]}.`;
       out.appendChild(timeDisplay);
-      buildGraph(path);
       return;
     }
 
