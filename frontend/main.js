@@ -2,6 +2,8 @@ let actors = []; // array of actor names (strings), sorted
 let actorMap = {}; // name -> id
 let actorIdToName = {};
 let movieIdToName = {};
+let actorIdToUrl = {};
+let movieIdToUrl = {};
 
 // binary search with a prefix
 function lowerBoundPrefix(arr, prefix) {
@@ -73,12 +75,53 @@ function createGraphNode(text, nodeType, id) {
   if (nodeType === "actor-node") {
     node.href = `https://www.themoviedb.org/person/${id}`;
     node.textContent = `Node (Actor): ${text}`;
+    node.dataset.id = id;
+    node.dataset.type = "actor";
   } else {
     node.href = `https://www.themoviedb.org/movie/${id}`;
     node.textContent = `Edge (Movie): ${text}`;
+    node.dataset.id = id;
+    node.dataset.type = "movie";
   }
 
+  node.addEventListener("mouseenter", handleNodeHover);
+  node.addEventListener("mouseleave", hideImageContainer);
+
   return node;
+}
+
+function handleNodeHover(event) {
+  node = event.currentTarget;
+  id = node.dataset.id;
+  type = node.dataset.type;
+  
+  imageContainer = document.getElementById("hover-image-container");
+  image = document.getElementById("hover-image");
+  title = document.getElementById("hover-title");
+  
+  let imageUrl;
+  let titleText;
+  
+  if (type === "actor") {
+    imageUrl = actorIdToUrl[id];
+    titleText = actorIdToName[id];
+  } else {
+    imageUrl = movieIdToUrl[id];
+    titleText = movieIdToName[id];
+  }
+  
+  if (imageUrl) {
+    image.src = imageUrl;
+    title.textContent = titleText;
+    
+  }
+  
+  imageContainer.style.display = "block";
+}
+
+function hideImageContainer() {
+  imageContainer = document.getElementById("hover-image-container");
+  imageContainer.style.display = "none";
 }
 
 // create the bottom triangle section of the arrow between nodes
@@ -160,7 +203,24 @@ async function init() {
   }
 
   //
-  // 4) Wire up autocompletes
+  // 4) Load the ID → actor-url map
+  //
+  {
+    const r = await fetch("./id_actors_urls.json");
+    actorIdToUrl = await r.json();
+  }
+
+  //
+  // 5) Load the ID → movie-url map
+  //
+  {
+    const r = await fetch("./id_movies_urls.json");
+    movieIdToUrl = await r.json();
+  }
+
+
+  //
+  // 6) Wire up autocompletes
   //
   attachAutocomplete(
     document.getElementById("first"),

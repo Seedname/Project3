@@ -1,3 +1,4 @@
+/* styles for the main body */
 body {
   margin: 0;
   padding: 0;
@@ -8,6 +9,7 @@ body {
   background-color: rgb(255, 209, 254);
 }
 
+/* styles for the left-side box that contains the menu */
 .container {
   width: 350px;
   height: 80vh;
@@ -19,6 +21,7 @@ body {
   margin-left: 20px;
 }
 
+/* container for the graph shown on the middle of the screen */
 .graph-container {
   flex: 1;
   height: 90vh;
@@ -28,6 +31,7 @@ body {
   overflow: auto;
 }
 
+/* graph styles */
 .graph {
   display: flex;
   flex-direction: column;
@@ -37,6 +41,7 @@ body {
   padding: 20px;
 }
 
+/* styles for the graph nodes, including both movies and actors */
 .node {
   padding: 10px;
   border-radius: 8px;
@@ -48,11 +53,13 @@ body {
   text-decoration: none;
 }
 
+/* color style for the actor nodes */
 .actor-node {
   background-color: #b3e0ff;
   border: 2px solid #0077cc;
 }
 
+/* color style for the movie edges */
 .movie-node {
   background-color: #ffd699;
   border: 2px solid #ff9900;
@@ -67,6 +74,7 @@ body {
   transform: translateX(0px) translateY(-6px) rotate(45deg);
 }
 
+/* line section of the arrow */
 .line {
   border: solid black;
   border-width: 0 3px 0 0;
@@ -75,6 +83,7 @@ body {
   transform: translateX(-5px) translateY(3px);
 }
 
+/* suggestions for the dropdown menu */
 .suggestions {
   list-style: none;
   margin: -3px;
@@ -111,6 +120,7 @@ select {
   margin-top: 20px;
 }
 
+/* styles for the loading section while algorithm is executing */
 .spinner {
   border: 4px solid rgba(0, 0, 0, 0.1);
   border-left-color: #000;
@@ -134,4 +144,31 @@ select {
   margin-top: 10px;
   font-weight: bold;
   color: #333;
+}
+
+/* code for the container of the image that comes up when a node is hovered over */
+#hover-image-container {
+  position: absolute;
+  justify-content: center;
+  align-items: flex-start;
+  right: 20px;
+  background-color: white;
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 10px;
+  max-width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+#hover-image-container img {
+  width: 100%;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.hover-title {
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
 }
