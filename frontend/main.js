@@ -62,11 +62,15 @@ function attachAutocomplete(inputEl, suggestionsEl, idHiddenEl) {
   });
 }
 
+// function to create a "node" in this graph (contains both actual nodes (actor) and edges(movies))
 function createGraphNode(text, nodeType, id) {
+
+  // make a new node, make the link it points to open in a new window
   const node = document.createElement('a');
   node.className = `node ${nodeType}`;
   node.target = '_blank';
 
+  // both the text content and the link are based on the nodeType (actor-node or movie-node)
   if (nodeType === 'actor-node'){
     node.href = `https://www.themoviedb.org/person/${id}`;
     node.textContent = `Node (Actor): ${text}`;
@@ -74,15 +78,18 @@ function createGraphNode(text, nodeType, id) {
     node.href = `https://www.themoviedb.org/movie/${id}`;
     node.textContent = `Edge (Movie): ${text}`;
   }
+
   return node;
 }
 
+// create the bottom triangle section of the arrow between nodes
 function createArrow() {
   const arrow = document.createElement('div');
   arrow.className = 'arrow';
   return arrow;
 }
 
+// create the top line section of the arrow between nodes
 function createLine() {
   const line = document.createElement('div');
   line.className = 'line';
@@ -90,31 +97,36 @@ function createLine() {
 }
 
 function buildGraph(path) {
+
+  // fetch the graph and clear the previously queried graph
   const graphContainer = document.querySelector('.graph');
   graphContainer.innerHTML = '';
   
+  // get the id and name of the source node (actor), and add it to the graph
   const sourceId = document.getElementById("first_id").value;
-  const firstActorName = actorIdToName[String(sourceId)] || `(actor #${sourceId})`;
-  
+  const firstActorName = actorIdToName[String(sourceId)];
   graphContainer.appendChild(createGraphNode(firstActorName, 'actor-node', sourceId));
   
-  let previousActorId = sourceId;
+  // loop through the quickest path detected from source to end
   for (let i = 0; i < path.length; i++) {
-    const [actorId, movieId] = path[i];
+    actorId = path[i][0];
+    movieId = path[i][1];
     
+    // create the arrow between nodes
     graphContainer.appendChild(createLine());
     graphContainer.appendChild(createArrow());
     
-    const movieTitle = movieIdToName[String(movieId)] || `(movie #${movieId})`;
+    // add the movie node to the graph
+    movieTitle = movieIdToName[String(movieId)];
     graphContainer.appendChild(createGraphNode(movieTitle, 'movie-node', movieId));
     
+    // create another arrow
     graphContainer.appendChild(createLine());
     graphContainer.appendChild(createArrow());
     
-    const actorName = actorIdToName[String(actorId)] || `(actor #${actorId})`;
+    // add the next actor node to the graph
+    actorName = actorIdToName[String(actorId)];
     graphContainer.appendChild(createGraphNode(actorName, 'actor-node', actorId));
-    
-    previousActorId = actorId;
   }
 }
 
