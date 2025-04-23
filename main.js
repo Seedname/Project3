@@ -261,7 +261,7 @@ const submit = async (event) => {
 
   try {
     const algo = document.getElementById("algorithm").value;
-    const apiUrl = new URL(`http://97.100.143.136:8080/${algo}`);
+    const apiUrl = new URL(`https://starchain.ddns.net:8080/${algo}`);
     apiUrl.searchParams.append("source", sourceId);
     apiUrl.searchParams.append("target", targetId);
 
