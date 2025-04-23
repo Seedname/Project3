@@ -1,41 +1,42 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Oracle of Bacon</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Oracle of Bacon</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-    <body>
-        <div class="container">
-            <h2>Oracle of Bacon</h2>
-            <form id="form">
-                <label for="first">Actor 1:</label>
-                <input name="first" id="first" autocomplete="off" required>
-                <input type="hidden" name="first_id" id="first_id">
-                <ul id="first_suggestions" class="suggestions"></ul>
+  <body>
+    <div class="container">
+      <h2>Oracle of Bacon</h2>
+      <form id="form">
+        <label for="first">Actor 1:</label>
+        <input name="first" id="first" autocomplete="off" required />
+        <input type="hidden" name="first_id" id="first_id" />
+        <ul id="first_suggestions" class="suggestions"></ul>
 
-                <label for="second">Actor 2:</label>
-                <input name="second" id="second" autocomplete="off" required>
-                <input type="hidden" name="second_id" id="second_id">
-                <ul id="second_suggestions" class="suggestions"></ul>
+        <label for="second">Actor 2:</label>
+        <input name="second" id="second" autocomplete="off" required />
+        <input type="hidden" name="second_id" id="second_id" />
+        <ul id="second_suggestions" class="suggestions"></ul>
 
-                <label for="algorithm">Choose algorithm:</label>
-                <select id="algorithm">
-                    <option value="best-first">Best-First Search</option>
-                    <option value="bfs">Breadth-First Search</option>
-                </select>
-                
-                <input type="submit" value="Find Connection">
-            </form>
+        <label for="algorithm">Choose algorithm:</label>
+        <select id="algorithm">
+          <option value="best-first">Best-First Search</option>
+          <option value="bfs">Breadth-First Search</option>
+        </select>
 
-            <div id="output"></div>
-        </div>
+        <input type="submit" value="Find Connection" />
+      </form>
+      <div id="loading"><span class="spinner"></span>Processing...</div>
 
-        <div class="graph-container">
-            <div class="graph"></div>
-        </div>
+      <div id="output"></div>
+    </div>
 
-        <script src="main.js"></script>
-    </body>
+    <div class="graph-container">
+      <div class="graph"></div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
 </html>
