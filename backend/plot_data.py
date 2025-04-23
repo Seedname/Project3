@@ -4,6 +4,7 @@ import pandas as pd
 import math
 from statistics import mean, stdev
 import scipy
+from collections import defaultdict
 
 # function to perform a matched-pairs t-test
 def t_test_matched_pairs(time_difference):
@@ -86,13 +87,11 @@ def main() -> None:
                 length = len(line)
                 if length > 6:
                     line = [' '.join(line[:length-6])] + line[length-6+1:]
-                # print(line)
+
+
                 name, actor_id, best_first_path_len, time_best_first, bfs_path_len, time_bfs = line
                 if int(best_first_path_len) >= 0:
                     
-                    # dev code to give the actors with bacon number 6
-                    # if int(best_first_path_len) == 6:
-                    #    print(name)
                     
                     best_first_times.append(float(time_best_first))
                     bfs_times.append(float(time_bfs))
@@ -102,13 +101,28 @@ def main() -> None:
                     
                 time_difference.append(float(time_bfs) - float(time_best_first))
 
-    x = list(range(10_000))
-    
-    # for i, length in enumerate(bfs_lens):
-    #     if best_first_lens[i] != length:
-    #         print(i, best_first_lens[i], length)
-    # print(max(bfs_times))
-    
+
+    x = list(range(1, 7))
+    bfs_length_to_points = defaultdict(list)
+    best_length_to_points = defaultdict(list)
+    for i in range(len(bfs_times)):
+        bfs_length_to_points[int(bfs_lens[i])].append(bfs_times[i])
+        best_length_to_points[int(best_first_lens[i])].append(best_first_times[i])
+
+
+    bfs_averages = [0] * 6
+    best_first_averages = [0] * 6
+    for key in bfs_length_to_points:
+        bfs_averages[key-1] = mean(bfs_length_to_points[key]) * len(bfs_length_to_points[key]) / len(bfs_times)
+        best_first_averages[key-1] = mean(best_length_to_points[key]) * len(best_length_to_points[key]) / len(bfs_times)
+
+    plt.plot(x, bfs_averages)
+    plt.plot(x, best_first_averages)
+    plt.xlabel("Path Length")
+    plt.ylabel("Mean Time by Relative Frequency (s)")
+    plt.savefig(path / "data.png")
+    plt.show()
+
     print("---------------------------------")
     t_test_matched_pairs(time_difference)
     

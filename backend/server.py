@@ -5,7 +5,7 @@ from collections import deque
 from flask_cors import CORS
 import heapq
 import json
-
+import time
 
 path = pathlib.Path(__file__).parent
 with open(path / "graph.data", 'rb') as f:
@@ -36,7 +36,6 @@ def bfs():
 
     # seen will contain all seen vertices (actors)
     seen = {source}
-
     while q:
         cur = q.popleft()
         for pair in graph[cur[0]]:
@@ -48,12 +47,12 @@ def bfs():
             if actor == target:
                 # update path and return
                 path = cur[1] + [[actor, movie]]
-                return jsonify({'path': path}), 200
+                return jsonify({'path': path, 'time': time.time() - start}), 200
             seen.add(actor)
             # update path and append new actor to q
             q.append((actor, cur[1]+[[actor, movie]]))
 
-    return jsonify({'path': []}), 200
+    return jsonify({'path': [], 'time': time.time() - start}), 200
 
 
 @app.route('/best-first', methods=['GET'])
@@ -73,7 +72,6 @@ def best_first_search():
 
     # seen will contain all seen vertices (actors)
     seen = {source}
-
     while pq:
         cur = heapq.heappop(pq)
         for trip in graph[cur[2]]:
@@ -86,14 +84,14 @@ def best_first_search():
             if actor == target:
                 # update path and return
                 path = cur[3] + [[actor, movie]]
-                return jsonify({'path': path}), 200
+                return jsonify({'path': path, 'time': time.time() - start}), 200
             seen.add(actor)
 
             # abs(target_pop-popularity) is our priority heuristic
             heapq.heappush(pq, (cur[0]+1, abs(target_pop-popularity),
                            actor, cur[3]+[[actor, movie]]))
 
-    return jsonify({'path': []}), 200
+    return jsonify({'path': [], 'time': time.time() - start}), 200
 
 
 if __name__ == '__main__':

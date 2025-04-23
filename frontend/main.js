@@ -6,6 +6,7 @@ let actorIdToUrl = {};
 let movieIdToUrl = {};
 
 // binary search with a prefix
+// idea from https://www.geeksforgeeks.org/longest-common-prefix-using-binary-search/
 function lowerBoundPrefix(arr, prefix) {
   let lo = 0,
     hi = arr.length;
