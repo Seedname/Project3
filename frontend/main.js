@@ -215,6 +215,7 @@ const submit = async (event) => {
         actorIdToName[String(sourceId)]
       } and ${actorIdToName[String(targetId)]}.`;
       out.appendChild(timeDisplay);
+      buildGraph(path);
       return;
     }
 
