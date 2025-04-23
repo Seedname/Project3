@@ -4,7 +4,7 @@ from collections import defaultdict
 import pickle
 
 
-def main(include_popularities: bool = False) -> None:
+def main(include_popularities: bool = True) -> None:
     graph = defaultdict(list)
 
     with open(path / "actor_movies.json", 'r') as f:

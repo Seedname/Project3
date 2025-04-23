@@ -47,12 +47,12 @@ def bfs():
             if actor == target:
                 # update path and return
                 path = cur[1] + [[actor, movie]]
-                return jsonify({'path': path, 'time': time.time() - start}), 200
+                return jsonify({'path': path}), 200
             seen.add(actor)
             # update path and append new actor to q
             q.append((actor, cur[1]+[[actor, movie]]))
 
-    return jsonify({'path': [], 'time': time.time() - start}), 200
+    return jsonify({'path': []}), 200
 
 
 @app.route('/best-first', methods=['GET'])
@@ -84,14 +84,14 @@ def best_first_search():
             if actor == target:
                 # update path and return
                 path = cur[3] + [[actor, movie]]
-                return jsonify({'path': path, 'time': time.time() - start}), 200
+                return jsonify({'path': path}), 200
             seen.add(actor)
 
             # abs(target_pop-popularity) is our priority heuristic
             heapq.heappush(pq, (cur[0]+1, abs(target_pop-popularity),
                            actor, cur[3]+[[actor, movie]]))
 
-    return jsonify({'path': [], 'time': time.time() - start}), 200
+    return jsonify({'path': []}), 200
 
 
 if __name__ == '__main__':
